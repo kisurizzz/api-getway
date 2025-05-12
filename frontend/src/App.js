@@ -4,6 +4,7 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import TodoList from "./components/TodoList";
 import NoteList from "./components/NoteList";
+import { Auth } from "aws-amplify";
 
 // Configure Amplify
 Amplify.configure({
@@ -16,7 +17,21 @@ Amplify.configure({
     endpoints: [
       {
         name: "api",
-        endpoint: process.env.REACT_APP_API_ENDPOINT,
+        endpoint: process.env.REACT_APP_API_ENDPOINT.replace(/\/$/, ""),
+        custom_header: async () => {
+          try {
+            const session = await Auth.currentSession();
+            const token = session.getIdToken().getJwtToken();
+            console.log("API Endpoint:", process.env.REACT_APP_API_ENDPOINT);
+            console.log("Auth Token:", token.substring(0, 20) + "...");
+            return {
+              Authorization: `Bearer ${token}`,
+            };
+          } catch (error) {
+            console.error("Error getting auth token:", error);
+            return {};
+          }
+        },
       },
     ],
   },
@@ -27,27 +42,31 @@ function App() {
 
   return (
     <Authenticator
-      signUpAttributes={["username"]}
-      formFields={[
-        {
-          type: "username",
-          label: "Username",
-          placeholder: "Enter your username",
-          required: true,
+      initialState="signUp"
+      formFields={{
+        signUp: {
+          email: {
+            label: "Email",
+            placeholder: "Enter your email",
+            required: true,
+          },
+          name: {
+            label: "Full Name",
+            placeholder: "Enter your full name",
+            required: true,
+          },
+          password: {
+            label: "Password",
+            placeholder: "Enter your password",
+            required: true,
+          },
+          confirm_password: {
+            label: "Confirm Password",
+            placeholder: "Confirm your password",
+            required: true,
+          },
         },
-        {
-          type: "password",
-          label: "Password",
-          placeholder: "Enter your password",
-          required: true,
-        },
-        {
-          type: "confirm_password",
-          label: "Confirm Password",
-          placeholder: "Confirm your password",
-          required: true,
-        },
-      ]}
+      }}
     >
       {({ signOut, user }) => (
         <div className="min-h-screen bg-gray-100">

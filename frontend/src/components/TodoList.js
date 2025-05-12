@@ -13,10 +13,17 @@ function TodoList() {
 
   const fetchTodos = async () => {
     try {
+      console.log("Fetching todos...");
       const response = await API.get("api", "/todos");
+      console.log("Todos response:", response);
       setTodos(response);
     } catch (error) {
       console.error("Error fetching todos:", error);
+      console.error("Error details:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
     }
   };
 
@@ -25,15 +32,23 @@ function TodoList() {
     if (!newTodo.trim()) return;
 
     try {
+      console.log("Creating todo...");
       const todo = {
         title: newTodo,
         completed: false,
       };
-      await API.post("api", "/todos", { body: todo });
+      console.log("Todo payload:", todo);
+      const response = await API.post("api", "/todos", { body: todo });
+      console.log("Create todo response:", response);
       setNewTodo("");
       fetchTodos();
     } catch (error) {
       console.error("Error creating todo:", error);
+      console.error("Error details:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
     }
   };
 
