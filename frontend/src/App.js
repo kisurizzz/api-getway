@@ -16,7 +16,8 @@ Amplify.configure({
     endpoints: [
       {
         name: "api",
-        endpoint: "https://496ja981q2.execute-api.us-east-1.amazonaws.com/dev/",
+        endpoint:
+          process.env.REACT_APP_API_ENDPOINT,
       },
     ],
   },
