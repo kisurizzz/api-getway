@@ -143,8 +143,3 @@ sam delete
    - Encryption at rest
    - Encryption in transit
    - Secure authentication
-
-3. **Monitoring**
-   - CloudWatch integration
-   - WAF logging
-   - API Gateway logging 

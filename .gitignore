@@ -4,6 +4,16 @@ AUTHENTICATION.md
 SECURITY_IMPLEMENTATION.md
 RISK_ANALYSIS.md
 
+# Test scripts
+test-waf.sh
+test-api.sh
+test-rate-limit.sh
+cleanup.sh
+
+# AWS SAM configuration
+samconfig.yml
+samconfig.toml
+
 # Common system files
 .DS_Store
 __pycache__/
