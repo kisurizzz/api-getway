@@ -2,6 +2,10 @@
 
 This project implements a secure API Gateway with WAF protection, featuring two simple APIs (Todos and Notes) with authentication and rate limiting.
 
+## Live Demo
+
+The frontend application is deployed and available at: [https://api-getway-nine.vercel.app/](https://api-getway-nine.vercel.app/)
+
 ## Architecture
 
 - AWS API Gateway for API management
