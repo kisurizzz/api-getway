@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
@@ -16,8 +16,7 @@ Amplify.configure({
     endpoints: [
       {
         name: "api",
-        endpoint:
-          process.env.REACT_APP_API_ENDPOINT,
+        endpoint: process.env.REACT_APP_API_ENDPOINT,
       },
     ],
   },
@@ -27,7 +26,29 @@ function App() {
   const [activeTab, setActiveTab] = useState("todos");
 
   return (
-    <Authenticator>
+    <Authenticator
+      signUpAttributes={["username"]}
+      formFields={[
+        {
+          type: "username",
+          label: "Username",
+          placeholder: "Enter your username",
+          required: true,
+        },
+        {
+          type: "password",
+          label: "Password",
+          placeholder: "Enter your password",
+          required: true,
+        },
+        {
+          type: "confirm_password",
+          label: "Confirm Password",
+          placeholder: "Confirm your password",
+          required: true,
+        },
+      ]}
+    >
       {({ signOut, user }) => (
         <div className="min-h-screen bg-gray-100">
           <nav className="bg-white shadow-lg">
