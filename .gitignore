@@ -1,11 +1,22 @@
 # Sensitive documentation files
-Implementation.md
-Authentication.md
-security_implementation.md
-Risk analysis.md
+IMPLEMENTATION_PLAN.md
+AUTHENTICATION.md
+SECURITY_IMPLEMENTATION.md
+RISK_ANALYSIS.md
 
 # Common system files
 .DS_Store
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
