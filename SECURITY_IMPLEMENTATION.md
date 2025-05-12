@@ -232,15 +232,7 @@ Tables:
    - Role-based access control
    - Regular access reviews
 
-2. **Monitoring**:
-   - CloudWatch logs
-   - AWS X-Ray tracing
-   - Security event logging
 
-3. **Compliance**:
-   - Data retention policies
-   - Audit logging
-   - Regular security assessments
 
 ## 4. Additional Security Measures
 
@@ -258,35 +250,8 @@ Tables:
    - Request size limits
    - Method validation
 
-### 4.2 Error Handling
-```javascript
-const handleError = (error) => {
-  console.error('Error:', error);
-  return {
-    statusCode: error.statusCode || 500,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify({
-      message: error.message || 'Internal server error'
-    })
-  };
-};
-```
 
-### 4.3 Security Headers
-```javascript
-const securityHeaders = {
-  'Content-Security-Policy': "default-src 'self'",
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'X-XSS-Protection': '1; mode=block'
-};
-```
-
-## 5. Security Monitoring and Maintenance
+## 4. Security Monitoring and Maintenance
 
 ### 5.1 Regular Security Tasks
 1. **Token Management**:
@@ -299,23 +264,4 @@ const securityHeaders = {
    - IAM role reviews
    - API access patterns
 
-3. **Security Updates**:
-   - Dependency updates
-   - Security patch management
-   - Configuration reviews
 
-### 5.2 Incident Response
-1. **Detection**:
-   - Unusual access patterns
-   - Rate limit breaches
-   - Authentication failures
-
-2. **Response**:
-   - Immediate blocking of suspicious IPs
-   - User account lockdown
-   - Security alert notifications
-
-3. **Recovery**:
-   - Service restoration
-   - Data recovery
-   - Security hardening 
