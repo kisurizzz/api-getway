@@ -26,7 +26,24 @@ const authenticateRequest = (event) => {
   };
 };
 
+// Helper function for CORS headers
+const corsHeaders = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type,Authorization",
+  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+};
+
 exports.handler = async (event) => {
+  // Handle OPTIONS request
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: "",
+    };
+  }
+
   try {
     // Authenticate the request
     const user = authenticateRequest(event);
@@ -46,6 +63,7 @@ exports.handler = async (event) => {
         if (!pathParams.id) {
           return {
             statusCode: 400,
+            headers: corsHeaders,
             body: JSON.stringify({ message: "Todo ID is required" }),
           };
         }
@@ -54,6 +72,7 @@ exports.handler = async (event) => {
         if (!pathParams.id) {
           return {
             statusCode: 400,
+            headers: corsHeaders,
             body: JSON.stringify({ message: "Todo ID is required" }),
           };
         }
@@ -61,6 +80,7 @@ exports.handler = async (event) => {
       default:
         return {
           statusCode: 400,
+          headers: corsHeaders,
           body: JSON.stringify({ message: "Unsupported method" }),
         };
     }
@@ -69,11 +89,13 @@ exports.handler = async (event) => {
     if (error.message.includes("Authorization")) {
       return {
         statusCode: 401,
+        headers: corsHeaders,
         body: JSON.stringify({ message: error.message }),
       };
     }
     return {
       statusCode: 500,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Internal server error" }),
     };
   }
@@ -92,9 +114,7 @@ async function getTodos(user) {
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(result.Items),
   };
 }
@@ -110,6 +130,7 @@ async function getTodo(id, user) {
   if (!result.Item) {
     return {
       statusCode: 404,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Todo not found" }),
     };
   }
@@ -118,15 +139,14 @@ async function getTodo(id, user) {
   if (result.Item.userId !== user.userId) {
     return {
       statusCode: 403,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Access denied" }),
     };
   }
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(result.Item),
   };
 }
@@ -135,6 +155,7 @@ async function createTodo(todoData, user) {
   if (!todoData.title) {
     return {
       statusCode: 400,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Title is required" }),
     };
   }
@@ -157,9 +178,7 @@ async function createTodo(todoData, user) {
 
   return {
     statusCode: 201,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(todo),
   };
 }
@@ -175,6 +194,7 @@ async function updateTodo(id, updateData, user) {
   if (!existingTodo.Item) {
     return {
       statusCode: 404,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Todo not found" }),
     };
   }
@@ -183,6 +203,7 @@ async function updateTodo(id, updateData, user) {
   if (existingTodo.Item.userId !== user.userId) {
     return {
       statusCode: 403,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Access denied" }),
     };
   }
@@ -201,9 +222,7 @@ async function updateTodo(id, updateData, user) {
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(updatedTodo),
   };
 }
@@ -219,6 +238,7 @@ async function deleteTodo(id, user) {
   if (!existingTodo.Item) {
     return {
       statusCode: 404,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Todo not found" }),
     };
   }
@@ -227,6 +247,7 @@ async function deleteTodo(id, user) {
   if (existingTodo.Item.userId !== user.userId) {
     return {
       statusCode: 403,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Access denied" }),
     };
   }
@@ -240,9 +261,7 @@ async function deleteTodo(id, user) {
 
   return {
     statusCode: 204,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify({ message: "Todo deleted successfully" }),
   };
 }

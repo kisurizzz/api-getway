@@ -23,8 +23,8 @@ Resources:
             UserPoolArn: !GetAtt UserPool.Arn
       Cors:
         AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
-        AllowHeaders: "'Content-Type,Authorization'"
-        AllowOrigin: "'*'"
+        AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'http://localhost:3000'"
 
   # Cognito User Pool
   UserPool:

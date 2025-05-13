@@ -17,12 +17,26 @@ Amplify.configure({
     endpoints: [
       {
         name: "api",
-        endpoint: process.env.REACT_APP_API_ENDPOINT.replace(/\/$/, ""),
+        endpoint:
+          process.env.REACT_APP_API_ENDPOINT ||
+          "https://496ja981q2.execute-api.us-east-1.amazonaws.com/dev",
         custom_header: async () => {
           try {
             const session = await Auth.currentSession();
-            const token = session.getIdToken().getJwtToken();
-            console.log("API Endpoint:", process.env.REACT_APP_API_ENDPOINT);
+            const idToken = session.getIdToken();
+            const accessToken = session.getAccessToken();
+            console.log("Token Type:", idToken.getTokenType()); // Should be 'id'
+            console.log("Token Claims:", idToken.decodePayload());
+            console.log(
+              "Token Expiration:",
+              new Date(idToken.getExpiration() * 1000).toLocaleString()
+            );
+            const token = idToken.getJwtToken();
+            console.log(
+              "API Endpoint:",
+              process.env.REACT_APP_API_ENDPOINT ||
+                "https://496ja981q2.execute-api.us-east-1.amazonaws.com/dev"
+            );
             console.log("Auth Token:", token.substring(0, 20) + "...");
             return {
               Authorization: `Bearer ${token}`,

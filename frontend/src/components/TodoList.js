@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import { PlusIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [editingTodo, setEditingTodo] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchTodos();
+    const checkAuth = async () => {
+      try {
+        const session = await Auth.currentSession();
+        console.log("Current session:", session);
+        console.log("ID Token:", session.getIdToken().getJwtToken());
+        // If we have a valid session, fetch todos
+        fetchTodos();
+      } catch (error) {
+        console.error("Auth error:", error);
+        setError("Authentication error. Please try logging in again.");
+      }
+    };
+    checkAuth();
   }, []);
 
   const fetchTodos = async () => {
     try {
+      setError(null);
       console.log("Fetching todos...");
       const response = await API.get("api", "/todos");
       console.log("Todos response:", response);
       setTodos(response);
     } catch (error) {
       console.error("Error fetching todos:", error);
+      if (error.response?.status === 401) {
+        setError("Authentication error - please try logging in again");
+      } else if (error.message === "Network Error") {
+        setError(
+          "CORS error - Unable to connect to the server. Please check your connection."
+        );
+      } else {
+        setError("Error fetching todos. Please try again later.");
+      }
       console.error("Error details:", {
         message: error.message,
         status: error.response?.status,
@@ -32,6 +55,7 @@ function TodoList() {
     if (!newTodo.trim()) return;
 
     try {
+      setError(null);
       console.log("Creating todo...");
       const todo = {
         title: newTodo,
@@ -44,6 +68,7 @@ function TodoList() {
       fetchTodos();
     } catch (error) {
       console.error("Error creating todo:", error);
+      setError("Error creating todo. Please try again.");
       console.error("Error details:", {
         message: error.message,
         status: error.response?.status,
@@ -54,26 +79,36 @@ function TodoList() {
 
   const updateTodo = async (id, updates) => {
     try {
+      setError(null);
       await API.put("api", `/todos/${id}`, { body: updates });
       fetchTodos();
       setEditingTodo(null);
     } catch (error) {
       console.error("Error updating todo:", error);
+      setError("Error updating todo. Please try again.");
     }
   };
 
   const deleteTodo = async (id) => {
     try {
+      setError(null);
       await API.del("api", `/todos/${id}`);
       fetchTodos();
     } catch (error) {
       console.error("Error deleting todo:", error);
+      setError("Error deleting todo. Please try again.");
     }
   };
 
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <h2 className="text-2xl font-bold mb-4">Todos</h2>
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
+        </div>
+      )}
 
       <form onSubmit={createTodo} className="mb-6">
         <div className="flex gap-2">
