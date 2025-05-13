@@ -1,0 +1,54 @@
+{
+    "items": [
+        {
+            "id": "7g7xx2",
+            "parentId": "u90qp5",
+            "pathPart": "{id}",
+            "path": "/todos/{id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "OPTIONS": {},
+                "PUT": {}
+            }
+        },
+        {
+            "id": "q8ljz6",
+            "parentId": "z18y7cwsne",
+            "pathPart": "notes",
+            "path": "/notes",
+            "resourceMethods": {
+                "GET": {},
+                "OPTIONS": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "u90qp5",
+            "parentId": "z18y7cwsne",
+            "pathPart": "todos",
+            "path": "/todos",
+            "resourceMethods": {
+                "GET": {},
+                "OPTIONS": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "w69po7",
+            "parentId": "q8ljz6",
+            "pathPart": "{id}",
+            "path": "/notes/{id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "OPTIONS": {},
+                "PUT": {}
+            }
+        },
+        {
+            "id": "z18y7cwsne",
+            "path": "/"
+        }
+    ]
+}

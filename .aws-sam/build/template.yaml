@@ -22,11 +22,20 @@ Resources:
               Fn::GetAtt:
               - UserPool
               - Arn
+        AddDefaultAuthorizerToCorsPreflight: false
       Cors:
         AllowMethods: '''GET,POST,PUT,DELETE,OPTIONS'''
         AllowHeaders: '''Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Allow-Headers'''
         AllowOrigin: '''https://api-getway-nine.vercel.app'''
         AllowCredentials: true
+      GatewayResponses:
+        DEFAULT_4XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: '''https://api-getway-nine.vercel.app'''
+              Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
+              Access-Control-Allow-Methods: '''GET,POST,PUT,DELETE,OPTIONS'''
+              Access-Control-Allow-Credentials: '''true'''
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
