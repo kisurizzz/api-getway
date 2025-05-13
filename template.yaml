@@ -24,7 +24,7 @@ Resources:
       Cors:
         AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
         AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
-        AllowOrigin: "'http://localhost:3000'"
+        AllowOrigin: "'https://api-getway-nine.vercel.app'"
 
   # Cognito User Pool
   UserPool:
