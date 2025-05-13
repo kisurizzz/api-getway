@@ -23,8 +23,9 @@ Resources:
             UserPoolArn: !GetAtt UserPool.Arn
       Cors:
         AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
-        AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+        AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Allow-Headers'"
         AllowOrigin: "'https://api-getway-nine.vercel.app'"
+        AllowCredentials: true
 
   # Cognito User Pool
   UserPool:
@@ -97,6 +98,14 @@ Resources:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
         MetricName: ApiWafWebAcl
+
+  # WAF WebACL Association with API Gateway
+  ApiWafWebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/restapis/${ApiGatewayApi}/stages/${Environment}
+      WebACLArn: !GetAtt ApiWafWebAcl.Arn
+    DependsOn: ApiGatewayApi
 
   # DynamoDB Tables
   TodosTable:

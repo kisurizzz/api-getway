@@ -1,0 +1,24 @@
+{
+    "items": [
+        {
+            "id": "496ja981q2",
+            "name": "secure-api-stack",
+            "createdDate": "2025-05-12T14:33:46+03:00",
+            "version": "1.0",
+            "apiKeySource": "HEADER",
+            "endpointConfiguration": {
+                "types": [
+                    "EDGE"
+                ],
+                "ipAddressType": "ipv4"
+            },
+            "tags": {
+                "aws:cloudformation:logical-id": "ApiGatewayApi",
+                "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-east-1:050451404858:stack/secure-api-stack/d29a96c0-2f24-11f0-8dfe-0affcc496de3",
+                "aws:cloudformation:stack-name": "secure-api-stack"
+            },
+            "disableExecuteApiEndpoint": false,
+            "rootResourceId": "z18y7cwsne"
+        }
+    ]
+}

@@ -26,7 +26,26 @@ const authenticateRequest = (event) => {
   };
 };
 
+// Helper function for CORS headers
+const corsHeaders = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "https://api-getway-nine.vercel.app",
+  "Access-Control-Allow-Headers":
+    "Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token",
+  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+  "Access-Control-Allow-Credentials": "true",
+};
+
 exports.handler = async (event) => {
+  // Handle OPTIONS request
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: "",
+    };
+  }
+
   try {
     // Authenticate the request
     const user = authenticateRequest(event);
@@ -46,6 +65,7 @@ exports.handler = async (event) => {
         if (!pathParams.id) {
           return {
             statusCode: 400,
+            headers: corsHeaders,
             body: JSON.stringify({ message: "Note ID is required" }),
           };
         }
@@ -54,6 +74,7 @@ exports.handler = async (event) => {
         if (!pathParams.id) {
           return {
             statusCode: 400,
+            headers: corsHeaders,
             body: JSON.stringify({ message: "Note ID is required" }),
           };
         }
@@ -61,6 +82,7 @@ exports.handler = async (event) => {
       default:
         return {
           statusCode: 400,
+          headers: corsHeaders,
           body: JSON.stringify({ message: "Unsupported method" }),
         };
     }
@@ -69,11 +91,13 @@ exports.handler = async (event) => {
     if (error.message.includes("Authorization")) {
       return {
         statusCode: 401,
+        headers: corsHeaders,
         body: JSON.stringify({ message: error.message }),
       };
     }
     return {
       statusCode: 500,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Internal server error" }),
     };
   }
@@ -92,9 +116,7 @@ async function getNotes(user) {
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(result.Items),
   };
 }
@@ -110,6 +132,7 @@ async function getNote(id, user) {
   if (!result.Item) {
     return {
       statusCode: 404,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Note not found" }),
     };
   }
@@ -118,15 +141,14 @@ async function getNote(id, user) {
   if (result.Item.userId !== user.userId) {
     return {
       statusCode: 403,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Access denied" }),
     };
   }
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(result.Item),
   };
 }
@@ -135,6 +157,7 @@ async function createNote(noteData, user) {
   if (!noteData.content) {
     return {
       statusCode: 400,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Content is required" }),
     };
   }
@@ -156,9 +179,7 @@ async function createNote(noteData, user) {
 
   return {
     statusCode: 201,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(note),
   };
 }
@@ -174,6 +195,7 @@ async function updateNote(id, updateData, user) {
   if (!existingNote.Item) {
     return {
       statusCode: 404,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Note not found" }),
     };
   }
@@ -182,6 +204,7 @@ async function updateNote(id, updateData, user) {
   if (existingNote.Item.userId !== user.userId) {
     return {
       statusCode: 403,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Access denied" }),
     };
   }
@@ -200,9 +223,7 @@ async function updateNote(id, updateData, user) {
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify(updatedNote),
   };
 }
@@ -218,6 +239,7 @@ async function deleteNote(id, user) {
   if (!existingNote.Item) {
     return {
       statusCode: 404,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Note not found" }),
     };
   }
@@ -226,6 +248,7 @@ async function deleteNote(id, user) {
   if (existingNote.Item.userId !== user.userId) {
     return {
       statusCode: 403,
+      headers: corsHeaders,
       body: JSON.stringify({ message: "Access denied" }),
     };
   }
@@ -239,9 +262,7 @@ async function deleteNote(id, user) {
 
   return {
     statusCode: 204,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: corsHeaders,
     body: JSON.stringify({ message: "Note deleted successfully" }),
   };
 }

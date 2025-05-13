@@ -23,9 +23,9 @@ Resources:
               - UserPool
               - Arn
       Cors:
-        AllowMethods: '''GET,POST,PUT,DELETE,OPTIONS'''
-        AllowHeaders: '''Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Allow-Headers'''
-        AllowOrigin: '''https://api-getway-nine.vercel.app'''
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Origin,Access-Control-Allow-Methods,Access-Control-Allow-Headers'"
+        AllowOrigin: "'https://api-getway-nine.vercel.app'"
         AllowCredentials: true
   UserPool:
     Type: AWS::Cognito::UserPool
@@ -152,7 +152,7 @@ Resources:
   TodosFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: TodosFunction
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-zdqmlume2ssh/e3709b96ab3d5ec15529a948d99ac1a2
       Handler: index.handler
       Runtime: nodejs18.x
       Environment:
@@ -199,12 +199,10 @@ Resources:
               Ref: ApiGatewayApi
             Path: /todos/{id}
             Method: DELETE
-    Metadata:
-      SamResourceId: TodosFunction
   NotesFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: NotesFunction
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-zdqmlume2ssh/d17c861c3ec57f7118afad843a2598fc
       Handler: index.handler
       Runtime: nodejs18.x
       Environment:
@@ -251,8 +249,6 @@ Resources:
               Ref: ApiGatewayApi
             Path: /notes/{id}
             Method: DELETE
-    Metadata:
-      SamResourceId: NotesFunction
 Outputs:
   UserPoolId:
     Description: Cognito User Pool ID
