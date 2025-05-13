@@ -10,6 +10,12 @@ test-api.sh
 test-rate-limit.sh
 cleanup.sh
 
+# Test files
+**/*.test.js
+**/tests/
+**/__tests__/
+**/test/
+
 # AWS SAM configuration
 samconfig.yml
 samconfig.toml
