@@ -12,16 +12,33 @@ const authenticateRequest = (event) => {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  // For this example, we'll just check if it exists
   if (!token) {
     throw new Error("Invalid token");
   }
 
-  // Extract user information from the token
-  return {
-    userId: "user123",
-    username: "testuser",
-  };
+  try {
+    // Decode the JWT token (without verification for now - in production you should verify the signature)
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+
+    const payload = JSON.parse(jsonPayload);
+
+    // Extract user information from the JWT payload
+    return {
+      userId: payload.sub, // 'sub' is the user ID in Cognito JWT tokens
+      username: payload["cognito:username"] || payload.email || "unknown",
+    };
+  } catch (error) {
+    throw new Error("Invalid token format");
+  }
 };
 
 // Helper function for CORS headers
