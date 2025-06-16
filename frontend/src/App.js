@@ -10,14 +10,14 @@ import { Auth } from "aws-amplify";
 Amplify.configure({
   Auth: {
     region: "us-east-1",
-    userPoolId: "us-east-1_malguUP4s",
-    userPoolWebClientId: "6aosqe6tgct0m8fasnfvpur4cc",
+    userPoolId: "us-east-1_Hz6QPg4RW",
+    userPoolWebClientId: "5udnnjgbdpovt0sm997ps6iacd",
   },
   API: {
     endpoints: [
       {
         name: "api",
-        endpoint: "https://496ja981q2.execute-api.us-east-1.amazonaws.com/dev",
+        endpoint: "https://0xhtbzkg59.execute-api.us-east-1.amazonaws.com/dev",
         custom_header: async () => {
           try {
             const session = await Auth.currentSession();

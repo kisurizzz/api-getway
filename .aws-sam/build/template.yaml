@@ -115,7 +115,8 @@ Resources:
         Fn::GetAtt:
         - ApiWafWebAcl
         - Arn
-    DependsOn: ApiGatewayApi
+    DependsOn:
+    - ApiGatewayApiStage
   TodosTable:
     Type: AWS::DynamoDB::Table
     Properties:

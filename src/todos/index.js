@@ -12,16 +12,14 @@ const authenticateRequest = (event) => {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  // In a real implementation, you would validate the JWT token with Cognito
   // For this example, we'll just check if it exists
   if (!token) {
     throw new Error("Invalid token");
   }
 
   // Extract user information from the token
-  // In a real implementation, this would be decoded from the JWT
   return {
-    userId: "user123", // This would come from the decoded JWT
+    userId: "user123",
     username: "testuser",
   };
 };

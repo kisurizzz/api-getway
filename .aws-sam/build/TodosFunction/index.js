@@ -12,16 +12,14 @@ const authenticateRequest = (event) => {
   }
 
   const token = authHeader.replace("Bearer ", "");
-  // In a real implementation, you would validate the JWT token with Cognito
   // For this example, we'll just check if it exists
   if (!token) {
     throw new Error("Invalid token");
   }
 
   // Extract user information from the token
-  // In a real implementation, this would be decoded from the JWT
   return {
-    userId: "user123", // This would come from the decoded JWT
+    userId: "user123",
     username: "testuser",
   };
 };
@@ -29,7 +27,7 @@ const authenticateRequest = (event) => {
 // Helper function for CORS headers
 const corsHeaders = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "https://api-getway-nine.vercel.app",
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token",
   "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",

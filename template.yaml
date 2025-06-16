@@ -114,7 +114,8 @@ Resources:
     Properties:
       ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/restapis/${ApiGatewayApi}/stages/${Environment}
       WebACLArn: !GetAtt ApiWafWebAcl.Arn
-    DependsOn: ApiGatewayApi
+    DependsOn:
+      - ApiGatewayApiStage
 
   # DynamoDB Tables
   TodosTable:
