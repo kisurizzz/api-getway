@@ -121,13 +121,14 @@ exports.handler = async (event) => {
 async function getNotes(user) {
   const params = {
     TableName: TABLE_NAME,
-    FilterExpression: "userId = :userId",
+    IndexName: "UserIdIndex",
+    KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
       ":userId": user.userId,
     },
   };
 
-  const result = await dynamoDB.scan(params).promise();
+  const result = await dynamoDB.query(params).promise();
 
   return {
     statusCode: 200,
