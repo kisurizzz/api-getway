@@ -17,7 +17,6 @@ const authenticateRequest = (event) => {
   }
 
   try {
-    // Decode the JWT token (without verification for now - in production you should verify the signature)
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
@@ -121,13 +120,14 @@ exports.handler = async (event) => {
 async function getTodos(user) {
   const params = {
     TableName: TABLE_NAME,
-    FilterExpression: "userId = :userId",
+    IndexName: "UserIdIndex",
+    KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
       ":userId": user.userId,
     },
   };
 
-  const result = await dynamoDB.scan(params).promise();
+  const result = await dynamoDB.query(params).promise();
 
   return {
     statusCode: 200,

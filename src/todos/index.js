@@ -17,7 +17,6 @@ const authenticateRequest = (event) => {
   }
 
   try {
-    // Decode the JWT token (without verification for now - in production you should verify the signature)
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
